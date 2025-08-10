@@ -1,0 +1,59 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Ambiente virtual
+venv/
+env/
+.venv/
+
+# Cache do pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Build e distribuições
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Configurações locais
+*.env
+.env.*
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Banco de dados SQLite local (se usado)
+*.sqlite3
+*.db
+
+# Arquivos grandes de bibliotecas
+*.so
+*.dll
+*.dylib
+
+# ---- Flask ----
+instance/
+*.pid
+
+# ---- Pytest / cobertura ----
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+

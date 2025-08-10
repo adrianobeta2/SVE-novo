@@ -1,0 +1,128 @@
+entrar no servidor sve
+
+ssh imagem@192.168.1.100
+senha:imagem123#
+
+
+exemplo de copia de arquivo:
+
+ scp -r /home/adriano/Documentos/visionEmbarcado/templates/index.html imagem@192.168.1.100:/home/imagem/sve/templates
+ 
+ 
+ 
+ no servidor :
+ 
+ - entre na pasta do sve
+ cd sve
+ 
+ - ative o ambiente:
+ source venv/bin/activate
+ 
+ - ativacao e status do flaskapp // inicializacao do serviço
+ sudo systemctl start flaskapp.service
+ sudo systemctl stop flaskapp.service
+ sudo systemctl status flaskapp.service
+ 
+ sudo nano /etc/systemd/system/flaskapp.service  // editar
+
+
+
+ ################## listar as cameras com o id do dispositivo ##################
+ ls -l /dev/v4l/by-id/
+
+
+
+
+ 
+
+
+
+ - verifica o status da tela incial:
+ sudo systemctl status tela_inicial.service
+ 
+ sudo systemctl start tela_inicial.service
+
+sudo systemctl stop tela_inicial.service
+
+sudo nano /etc/systemd/system/tela_inicial.service //editar
+
+systemctl daemon-reload
+
+
+ 
+ 
+ - comando para verificar o serial do raspberry:
+ cat /proc/cpuinfo | grep Serial | awk '{print $3}'
+
+
+ -  editar as configuracoes de servico da tela incial:
+ sudo nano /etc/systemd/system/tela_inicial.service
+ 
+ - entrar na pasta template
+ cd templates
+
+- static
+cd static // para configurar o ip  servidor
+
+
+
+ - dentro do raspberry, mas posso
+###########compilacao para proteger o arquivo############
+
+python -m py_compile servidor.py
+
+entre na pasta:
+cd __pycache__
+
+mover e renomear para a pasta sve:
+ mv __pycache__/servidor.cpython-311.pyc /home/imagem/sve/servidor.pyc
+ 
+ 
+ 
+
+
+
+######## listar as cameras basler ########
+
+#lista cameras basler conectadas.
+
+http://127.0.0.1:6001/list_cameras
+
+
+
+#atualiza github
+git add .
+git commit -m "adicionado aprendizado de maquina OK NOK"
+git push origin main
+
+
+
+#reinstalar a biblioteca pypylon da basler
+pip install --force-reinstall pypylon
+
+
+
+######procedimento para instala o  face_recognition #####################
+
+pip install --no-cache-dir git+https://github.com/ageitgey/face_recognition_models
+pip install --no-cache-dir face-recognition
+
+pip install --upgrade setuptools
+
+pip install face-recognition
+
+
+ 
+ 
+
+#####################serias raspberry###############
+
+serial raspberry spare 163d90eebde2841a
+serial op30 regio 
+serial s5 stellants 2bfa9f2a43fe3e38
+
+
+
+
+
+
