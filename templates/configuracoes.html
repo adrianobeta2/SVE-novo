@@ -44,13 +44,13 @@
             background: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #007bff;
+            margin-bottom: 10px;
+            /*border: 2px solid #007bff;*/
             border-radius: 20px;
         }
 
         #controls button {
-            background-color: #007bff;
+            /*background-color: #007bff;*/
             color: white;
             border: none;
             padding: 10px 15px; 
@@ -86,7 +86,7 @@
             width: 50px;
             padding: 5px;
             border-radius: 20px;
-            border: 1px solid #ddd;
+            border: 5px solid #ddd;
             text-align: center;
             background-color: #f5f2f2;
         }
@@ -113,14 +113,14 @@
         }
 
         #canvas {
-            border: 2px solid #007bff;
-            border-radius: 8px;
+            border: 10px solid #333232;
+            border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
 
         #results {
-            border: 2px solid #007bff;
+           /* border: 2px solid #007bff;*/
             border-radius: 20px;
             margin-top: 20px;
             padding: 10px;
@@ -131,7 +131,7 @@
         
     
         #coordinates {
-            border: 2px solid #007bff;
+            /*border: 2px solid #007bff;*/
             border-radius: 20px;
             margin-top: 20px; /* Ajuste a margem superior conforme necessário */
             margin-top: 20px;
@@ -218,6 +218,18 @@
            
         }
         .button-referenceImg_NOK {
+            font-size: 20px;
+            background-color: #f20227;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+           
+        }
+
+        .button-treinar_nra {
             font-size: 20px;
             background-color: #f20227;
             color: white;
@@ -408,7 +420,7 @@
         .machine-learning-group {
             display: inline-block;
             background-color: #333232;
-            border: 3px solid #007bff;
+           /* border: 3px solid #007bff;*/
             border-radius: 20px; /* Borda arredondada */
             padding: 10px;
             text-align: center; /* Alinhamento centralizado */
@@ -677,8 +689,8 @@
         
 
         .localizador-icon {
-            width: 40px; /* Ajuste o tamanho da imagem conforme necessário */
-            height: 40px; /* Ajuste o tamanho da imagem conforme necessário */
+            width: 80px; /* Ajuste o tamanho da imagem conforme necessário */
+            height: 80px; /* Ajuste o tamanho da imagem conforme necessário */
         }
         #posicaoBtn:hover {
             transform: scale(1.20); /* Aumenta em 10% */
@@ -697,8 +709,8 @@
         
 
         .live-icon {
-            width: 40px; /* Ajuste o tamanho da imagem conforme necessário */
-            height: 40px; /* Ajuste o tamanho da imagem conforme necessário */
+            width: 80px; /* Ajuste o tamanho da imagem conforme necessário */
+            height: 80px; /* Ajuste o tamanho da imagem conforme necessário */
         }
         #liveBtn:hover {
             transform: scale(1.20); /* Aumenta em 10% */
@@ -716,8 +728,8 @@
         }
 
         .cinza-icon {
-            width: 40px; /* Ajuste o tamanho da imagem conforme necessário */
-            height: 40px; /* Ajuste o tamanho da imagem conforme necessário */
+            width: 80px; /* Ajuste o tamanho da imagem conforme necessário */
+            height: 80px; /* Ajuste o tamanho da imagem conforme necessário */
         }
         #grayBtn:hover {
             transform: scale(1.20); /* Aumenta em 10% */
@@ -742,6 +754,13 @@
             position: relative;   /* Garante que fique acima do ::before */
             z-index: 1;
         }
+        .rna-icon {
+            width: 60px; /* Ajuste o tamanho da imagem conforme necessário */
+            height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
+            transform: scale(1.20); /* Aumenta o ícone em 10% */
+            position: relative;   /* Garante que fique acima do ::before */
+            z-index: 1;
+        }
         #referenceImgNotBtn:hover {
             transform: scale(1.20); /* Aumenta em 10% */
         }
@@ -760,6 +779,26 @@
 
            
         }
+
+        #treinar_rnaBtn:hover {
+            transform: scale(1.20); /* Aumenta em 10% */
+        }
+        #treinar_rnaBtn:hover .notok-icon {
+            transform: scale(1.20); /* Aumenta o ícone em 10% */
+        }
+        #treinar_rnaBtn {
+            font-size: 0px;
+            transition: transform 0.2s ease-in-out;
+            transform-origin: center; /* Faz o zoom ser centralizado */
+            background: #040504;
+            border-radius: 50%; 
+            border: none;
+            cursor: pointer;
+            padding: 5px; /* Dá espaço para o zoom */
+
+           
+        }
+
 
         .ok-icon {
             width: 60px; /* Ajuste o tamanho da imagem conforme necessário */
@@ -818,6 +857,38 @@
             font-size: 14px;
             color: #f20227;
         }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+          }
+          .loading-content {
+            background: #050505;
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+          }
+          .spinner {
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ddd;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            100% { transform: rotate(360deg); }
+          }
         
     </style>
 </head>
@@ -834,6 +905,15 @@
         </h1>
     </div>
 
+    <!-- Popup de Loading -->
+    <div id="loading-popup" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Treinando Rede Neural Artificial, aguarde...</p>
+    </div>
+    </div>
+
+
     <div id="controls">
         <label id="camera">CAMERA:
                 <select id="camera-section">
@@ -842,8 +922,8 @@
                     <option value="2">2</option>
                 </select>
         </label>
-        <button id="drawRectangleBtn" onclick="setMode('drawRectangle')"title ="Criar um Retangulo"><img src="{{ url_for('static', filename='retangulo.png') }}" alt="" class="retangulo-icon"></button>
-        <button id="drawCircleBtn" onclick="setMode('drawCircle')"title ="Criar um Círculo"><img src="{{ url_for('static', filename='circulo.png') }}" alt="" class="circulo-icon"></button>
+        <button id="drawRectangleBtn" onclick="setMode('drawRectangle')"title ="Criar um Retangulo"><img src="{{ url_for('static', filename='retangulo3.png') }}" alt="" class="retangulo-icon"></button>
+        <button id="drawCircleBtn" onclick="setMode('drawCircle')"title ="Criar um Círculo"><img src="{{ url_for('static', filename='circulo3.png') }}" alt="" class="circulo-icon"></button>
         <button id="editBtn" onclick="setMode('edit')"title ="Editar um Roi"><img src="{{ url_for('static', filename='edit.png') }}" alt="" class="editar-icon"></button>
         <button id="deleteBtn" onclick="deleteAllROIs()"title ="Limpar a tela"><img src="{{ url_for('static', filename='limpar.png') }}" alt="" class="limpar-icon"></button>
         <button id="zoomInBtn" onclick="zoomIn()" title ="Diminuir o Zoom"><img src="{{ url_for('static', filename='zoom_mais.png') }}" alt="" class="zoomMenos-icon"></button>
@@ -882,12 +962,13 @@
                     <button class="button-imgNokDel" onclick="DelReferenceNOK()" title ="Apagar Imagens Negativas">
                         <span id="deleteNOKLabel"></span>  <!-- Label dinâmica -->
                     </button>
+                    <button id="treinar_rnaBtn" class="button-treinar_nra" onclick="TreinarRNA()" title ="Treinar IA"><img src="{{ url_for('static', filename='rede-neural2.png') }}" alt="" class="rna-icon"></button>
                 </div>
             </div>
             
-            <button id="posicaoBtn" class="button-ajustarPos" onclick="ajustarPosicaoLocalizador()"title ="Ajustar Posição"><img src="{{ url_for('static', filename='localizador.png') }}" alt="" class="localizador-icon"></button>
-            <button id="liveBtn"class="button-live" onclick="AoVivo()"title ="Transmissão Ao Vivo"><img src="{{ url_for('static', filename='live.png') }}" alt="" class="live-icon"></button>
-            <button id="grayBtn"class="button-gray" onclick="fetchImageGray()"title ="Escala de Cinza"><img src="{{ url_for('static', filename='cinza.png') }}" alt="" class="cinza-icon"></button>
+            <button id="posicaoBtn" class="button-ajustarPos" onclick="ajustarPosicaoLocalizador()"title ="Ajustar Posição"><img src="{{ url_for('static', filename='localizador2.png') }}" alt="" class="localizador-icon"></button>
+            <button id="liveBtn"class="button-live" onclick="AoVivo()"title ="Transmissão Ao Vivo"><img src="{{ url_for('static', filename='live2.png') }}" alt="" class="live-icon"></button>
+            <button id="grayBtn"class="button-gray" onclick="fetchImageGray()"title ="Escala de Cinza"><img src="{{ url_for('static', filename='cinza2.png') }}" alt="" class="cinza-icon"></button>
             <canvas id="canvas" width="800" height="600"></canvas>
         </div>
 
@@ -935,7 +1016,7 @@
         </div>   
             <div id="results">Resultados aparecerão aqui</div>
             <div id="coordinates"></div>
-            <div id="logo_sve"><img src="{{ url_for('static', filename='sve3.jpeg') }}" alt=""></div>
+            <div id="logo_sve"><img src="{{ url_for('static', filename='sve5.png') }}" alt=""></div>
             <!-- Label no rodapé inferior direito -->
             <div class="footer-label">
                Sistema de Visão Embarcado.
@@ -1308,6 +1389,39 @@
         // Configure a URL do servidor Flask
         //const SERVER_URL = 'http://127.0.0.1:6001';
         //const CARREGAR_IMAGEM_DINAMICA = 'http://127.0.0.1:5001';
+
+        async function TreinarRNA() {
+            try {
+                const selectedProgram = document.getElementById('programa-section').value;
+                const selectedValue = parseInt(selectedProgram, 10);
+                const selectedCamera = document.getElementById('camera-section').value;
+                const selectedValueCam = parseInt(selectedCamera, 10);
+        
+                // Mostra o popup
+                document.getElementById("loading-popup").style.display = "flex";
+        
+                const response = await fetch(`${SERVER_URL}/treinar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ programa: selectedValue, camera: selectedValueCam })
+                });
+        
+                // Aqui você pode verificar o resultado da requisição
+                if (!response.ok) {
+                    throw new Error("Falha no treinamento da RNA");
+                }
+        
+                // Sucesso → fecha popup
+                document.getElementById("loading-popup").style.display = "none";
+                alert("Treinamento finalizado com sucesso!");
+            } catch (error) {
+                document.getElementById("loading-popup").style.display = "none";
+                resultsContainer.innerHTML = 'Erro ao iniciar o treinamento da RNA!';
+                console.error(error);
+            }
+        }
         
         async function CapturarReference(){
             
@@ -1492,6 +1606,9 @@
 
         }
         
+            
+        let retanguloRef = null
+        let circuloRef = null
         
          // Substituir endpoints pelos definidos no servidor Flask
          async function Executar() {
@@ -1532,6 +1649,7 @@
                     const parafuso_on = roi.parafuso_ativo
                     const posicao_on =  roi.posicao_ativo
                     const ponto_xy_on = roi.ponto_xy_ativo
+                    const rna_on = roi.rna_ativo
 
                     const resultDiv = document.createElement('div');
                     resultDiv.classList.add('input-field');
@@ -1725,14 +1843,45 @@
                     else{
                         corStatusInput.classList.add('status-nok');
                     }
-
+                    
                     // Definir tamanho da caixa de entrada
                     corStatusInput.style.width = '50px'; // largura
                     corStatusInput.style.height = '20px'; // altura
                     
                     resultDiv.appendChild(corStatusInput);
                      }
-                   
+
+                     if(rna_on){
+                        // Label e input para Cor
+                        const rnaStatusLabel = document.createElement('label');
+                        rnaStatusLabel.classList.add('label-title');
+                        rnaStatusLabel.textContent = 'RNA Status: ';
+                        rnaStatusLabel.style.marginLeft = '10px'; // Margem à esquerda de 10px
+                        resultDiv.appendChild(rnaStatusLabel);
+                        
+    
+                        const rnaStatusInput = document.createElement('input');
+                        rnaStatusInput.type = 'text';
+                        rnaStatusInput.style.color = 'white';
+                        rnaStatusInput.value = roi.rna_status;
+                        rnaStatusInput.readOnly = true;
+                        if(roi.rna_status){
+                            rnaStatusInput.classList.add('status-ok');
+                        }
+                        else{
+                            rnaStatusInput.classList.add('status-nok');
+                        }
+                        
+                        // Definir tamanho da caixa de entrada
+                        rnaStatusInput.style.width = '50px'; // largura
+                        rnaStatusInput.style.height = '20px'; // altura
+                        
+                        resultDiv.appendChild(rnaStatusInput);
+                         }
+                         
+                     
+                     
+
                     const statusLabel = document.createElement('span');
                     statusLabel.classList.add('status-label');
                     if (roi.status) {
@@ -2143,9 +2292,7 @@
                 alert("Erro ao conectar ao servidor.");
             }
         }
-        
-        let retanguloRef = null
-        let circuloRef = null
+    
         
         async function receiveData() {
             // Adicionar seleção de seção ROI (ex: ROI1, ROI2, ROI3)

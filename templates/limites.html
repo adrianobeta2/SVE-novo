@@ -178,6 +178,9 @@
             <input type="checkbox" id="ponto_xy"> Ponto XY
         </label>
         <label>
+            <input type="checkbox" id="rna"> RNA
+        </label>
+        <label>
             <input type="checkbox" id="posicao"> Ajuste de Posição
         </label>
         <label>
@@ -423,6 +426,7 @@
                 document.getElementById("ponto_parafuso").checked = data_2.ponto_parafuso;
                 document.getElementById("posicao").checked = data_2.posicao;
                 document.getElementById("ponto_xy").checked = data_2.ponto_xy;
+                document.getElementById("rna").checked = data_2.rede_neural_artificial;
                 document.getElementById("n_rois").value = parseInt(data_2.n_rois, 10);
 
                   
@@ -503,6 +507,7 @@
                 ponto_parafuso: document.getElementById("ponto_parafuso").checked,
                 posicao: document.getElementById("posicao").checked,
                 ponto_xy: document.getElementById("ponto_xy").checked,
+                rede_neural_artificial: document.getElementById("rna").checked,
                 n_rois: document.getElementById("n_rois").value
             };
             const url_ferramentas = `${SERVER_URL}/ferramentas`;

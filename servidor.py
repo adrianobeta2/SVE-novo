@@ -22,6 +22,12 @@ import glob
 import re
 import base64
 import urllib.parse
+import treinar_modelo
+
+from tensorflow.keras.models import load_model
+
+# Pasta das imagens de referência para RNA 
+IMG_DIR = os.path.join(os.path.dirname(__file__), 'static', 'imagens')
 
 from pypylon import pylon
 from werkzeug.utils import secure_filename
@@ -591,7 +597,66 @@ def desenhar_roi(imagem, x, y, w, h, status, posicao, forma="retangulo"):
     else:
         raise ValueError("Forma não suportada. Use 'retangulo' ou 'circulo'.")
 
+############################################# REDE NEURAL ARTIFICIAL #################################
 
+def carregar_imagem(imagem, coordenadas):
+    """Carrega imagem em grayscale, recorta ROI e redimensiona"""
+    x, y, w, h = coordenadas
+    
+    img = imagem
+    roi = img[y:y+h, x:x+w]
+    roi = cv2.resize(roi, (28,28))
+    roi = roi.astype("float32") / 255.0
+    return roi.reshape(1,28,28,1)
+
+def predizer_frame(camera, programa,roi, gray,coordenadas):
+    """
+    Carrega modelo e prediz se frame está OK (1) ou NOK (0)
+    """
+
+    model_path = os.path.join(os.path.dirname(__file__), f"modelo_cam{camera}_prog{programa}_ROI{roi}.keras")
+    
+    
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Modelo não encontrado: {model_path}")
+    
+    
+    model = load_model(model_path)
+   
+    img = carregar_imagem(gray, coordenadas)
+   
+    pred = model.predict(img)
+    resultado = True if pred[0][0] >= 0.5 else False
+    return resultado
+
+
+@app.route("/treinar", methods=["POST"])
+def treinar():
+    try:
+        data = request.get_json()
+
+        programa = data.get("programa")
+        camera = data.get("camera")
+       #section = data.get('section') # obtem a seção (ROI) do JSON, se fornecida.
+
+        #PATH = f'config_{camera}_{programa}.ini'
+
+        
+        #print(f"Coordenadas para treinamento: {coordenadas}")
+        # Chama a função do seu script
+        model_sumary = treinar_modelo.treinar(
+            camera=camera,
+            programa=programa
+        )
+
+        return jsonify({
+            "status": "sucesso",
+            "mensagem": f"Treinamento concluído."
+        })
+
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+########################################################################################################
 
 url = "http://127.0.0.1:6001/capture"
 
@@ -677,6 +742,7 @@ def processResult():
         if response.status_code == 200:
             nparr = np.frombuffer(response.content, np.uint8)
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            img_gray =cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE)
         else:
             return jsonify({"error": f"Erro ao capturar frame: {response.json()['error']}"})
        
@@ -706,6 +772,7 @@ def processResult():
         ref_posicao_templ = (x_ref, y_ref) #fator para ajuste de posicao
        
         # Obter valores booleanos
+        rede_neural = config.getboolean('Ferramentas', 'rede_neural_artificial')
         cor = config.getboolean('Ferramentas', 'cor')
         textura = config.getboolean('Ferramentas', 'textura')
         pixel = config.getboolean('Ferramentas', 'pixel')
@@ -801,7 +868,18 @@ def processResult():
         for i, (x, y, w, h,textura_tolerancia,pixel_tolerancia, threshold_cor,ponto_tolerancia) in enumerate(rois, start=1):
             circulo = False
             if(w==h):circulo = True
+            roi_idex = i
             
+            ###############################  RNA  #######################################
+            if rede_neural == True:
+                coordenadas = (x,y,w,h)
+                #status_rna = predizer_frame(camera,programa,roi_idex,img_gray,coordenadas)
+                status_rna = predizer_frame(camera,programa,roi_idex,img_gray,coordenadas)
+                
+            else:
+                status_rna = True
+            ##############################################################################
+
             #########################Análise de Cor ######################################
             if(cor == True):
                 coordenadas = x,y,w,h
@@ -874,17 +952,17 @@ def processResult():
             if ponto_xy == True:
 
                 #analise da imagem de referencia OK
-                status_ponto_xy = False
+                status_ponto_xy = True
                 img_regiao_paraf,  cX, cY, min_val = centroPonto.centroDoponto(image,(x,y),w,contrast,brightness,gamma,exposure,ponto_tolerancia)
                 if(cX != 0 and cY !=0):
-                    status_ponto_xy = True
+                    status_ponto_xy = False
                        
             else:
                 status_ponto_xy = True
 
 
 
-            if( (status_texutura and status_roi and status_cor and status_paratuso and status_posicao and status_ponto_xy) ):
+            if( (status_rna and status_texutura and status_roi and status_cor and status_paratuso and status_posicao and status_ponto_xy) ):
                 status = True
             
             if(textura):
@@ -921,6 +999,8 @@ def processResult():
                 "media_roi": media_roi,
                 "pixel_status": status_roi,
                 "cor_status":status_cor,
+                "rna_status":status_rna,
+                "rna_ativo":rede_neural,
                 "status":status,
                 "textura_ativo":textura,
                 "cor_ativo":cor,
@@ -1832,6 +1912,8 @@ def update_ferramenta_config():
         config['Ferramentas']['nome_programa'] = str(data['nome_programa']).lower()
     if 'cor' in data:
         config['Ferramentas']['cor'] = str(data['cor']).lower()
+    if 'rede_neural_artificial' in data:
+        config['Ferramentas']['rede_neural_artificial'] = str(data['rede_neural_artificial']).lower()
     if 'textura' in data:
         config['Ferramentas']['textura'] = str(data['textura']).lower()
     if 'pixel' in data:
@@ -1865,6 +1947,7 @@ def get_ferramenta_config():
     return jsonify({
         "nome_programa": config['Ferramentas'].get('nome_programa'), #retorna o nome do programa
         "cor": config['Ferramentas'].get('cor', 'false') == 'true',  # Converte de volta para booleano
+        "rede_neural_artificial": config['Ferramentas'].get('rede_neural_artificial', 'false') == 'true',
         "textura": config['Ferramentas'].get('textura', 'false') == 'true',
         "pixel": config['Ferramentas'].get('pixel', 'false') == 'true',
         "ponto_parafuso": config['Ferramentas'].get('ponto_parafuso', 'false') == 'true',
